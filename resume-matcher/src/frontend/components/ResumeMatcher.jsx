@@ -13,7 +13,7 @@ export default function ResumeMatcher() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Resume Matcher</h2>
+      <h2 className="text-xl font-bold mb-4">Resume Matcher </h2>
 
       <textarea
         placeholder="Paste your resume text here"
