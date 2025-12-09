@@ -14,6 +14,7 @@ export default function App() {
     <AuthProvider>
       <Router>
         <TopBar/>
+        <div className="pt-16">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -44,6 +45,7 @@ export default function App() {
             }
           /> */}
         </Routes>
+        </div>
       </Router>
     </AuthProvider>
   );

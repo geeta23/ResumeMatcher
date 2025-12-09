@@ -17,9 +17,7 @@ export const uploadResume = async (file) => {
 };
 
 export const matchResume = (resumeText, jobDescription) => {
-  //console.log("frontend resumeText: ", resumeText);
-  //console.log("frontend jobDescription: ", jobDescription);
-  return axios.post(`${api}/match`, {
+  return axios.post(`http://localhost:3000/api/resume/match`, {
     resumeText,
     jobDescription
   });
