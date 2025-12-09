@@ -25,4 +25,7 @@ dist-ssr
 .env
 *.env
 .env.*
+resume-matcher/src/backend/.env
+resume-matcher/src/frontend/.env
+
 

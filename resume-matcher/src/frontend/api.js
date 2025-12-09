@@ -17,12 +17,17 @@ export const uploadResume = async (file) => {
 };
 
 export const matchResume = (resumeText, jobDescription) => {
-  console.log("frontend resumeText: ", resumeText);
-  console.log("frontend jobDescription: ", jobDescription);
-  return axios.post("http://localhost:3000/match", {
+  //console.log("frontend resumeText: ", resumeText);
+  //console.log("frontend jobDescription: ", jobDescription);
+  return axios.post(`${api}/match`, {
     resumeText,
     jobDescription
   });
 };
+
+export const loginAPI = (email, password) =>
+  axios.post("http://localhost:3000/api/auth/login", { email, password });
+export const registerAPI = (username, email, password) =>
+  axios.post("http://localhost:3000/api/auth/register", { username, email, password });
 
 export default api;

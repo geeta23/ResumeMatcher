@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { matchResume } from "../api";
+import TopBar from "./TopBar";
 
 export default function ResumeMatcher() {
   const [resumeText, setResumeText] = useState("");
@@ -12,8 +13,9 @@ export default function ResumeMatcher() {
   };
 
   return (
+    <div className="min-h-screen bg-gray-50">
     <div className="p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Resume Matcher </h2>
+      <h2 className="text-xl font-bold mb-4">ResumeIQ </h2>
 
       <textarea
         placeholder="Paste your resume text here"
@@ -40,6 +42,7 @@ export default function ResumeMatcher() {
           {JSON.stringify(result, null, 2)}
         </pre>
       )}
+    </div>
     </div>
   );
 }
