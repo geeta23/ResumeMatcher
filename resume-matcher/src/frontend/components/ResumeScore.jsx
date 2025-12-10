@@ -77,7 +77,7 @@ export default function ResumeScore() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-4">
+    <div className="max-w-3xl mx-auto mt-10 p-4 w-full">
       
       <h1 className="text-3xl font-bold text-center text-blue-600">
         Resume ATS Score Checker

@@ -23,10 +23,10 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleRegister}
-        className="bg-white p-6 rounded-xl w-80 shadow-xl flex flex-col gap-4"
+        className="bg-white p-6 rounded-xl w-96 shadow-xl flex flex-col gap-4 mt-20"
       >
         <h2 className="text-xl font-bold text-blue-600 text-center">
           Register

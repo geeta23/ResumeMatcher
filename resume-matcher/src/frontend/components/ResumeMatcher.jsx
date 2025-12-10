@@ -9,6 +9,7 @@ export default function ResumeMatcher() {
 
   // ⭐ Create a reference to the results section
   const resultRef = useRef(null);
+  
 
   const handleMatch = async () => {
     if (!resumeText || !jobDesc)

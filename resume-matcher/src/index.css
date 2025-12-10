@@ -73,3 +73,38 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* for animation */
+/* Soft professional gradient (top to bottom) */
+.colorful-bg {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #eef6ff, #ffffff);
+  z-index: -1;
+}
+
+/* Icons background */
+.hr-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Basic icon style */
+.hr-bg span {
+  position: absolute;
+  opacity: 0.22;
+  animation: floatUp linear infinite;
+  filter: drop-shadow(0px 0px 4px rgba(0,0,0,0.15));
+}
+
+/* Float animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-130vh) rotate(360deg);
+  }
+}
