@@ -34,6 +34,84 @@ Return the response in the following JSON structure:
 Inputs:
 Resume: ${resumeText}
 Job Description: ${jobDescription}
+
+    `;
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      response_format: { type: "json_object" },
+      messages: [{ role: "user", content: prompt }]
+    });
+
+    const text = JSON.parse(completion.choices[0].message.content);
+
+    res.json({ result: text });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+router.post("/AtsScore", async (req, res) => {
+  try {
+    const { resumeText} = req.body;
+    const prompt = `
+ You are an ATS (Applicant Tracking System) evaluation engine.  
+Your job is to analyze the resume and return a structured ATS score with detailed insights.
+
+Analyze the resume on these criteria:
+
+1. **Overall ATS Score (0–100)**
+   - Keyword strength
+   - Content quality
+   - Formatting quality
+   - ATS readability
+   - Resume structure completeness
+
+2. **Missing Sections**
+   Identify important sections missing from the resume:
+   - Summary / Objective
+   - Skills section
+   - Work Experience
+   - Projects
+   - Education
+   - Certifications
+   - Achievements
+   - Contact Information
+
+3. **Formatting Issues**
+   - Improper spacing, symbols, tables
+   - Overuse of graphics or images
+   - Incorrect heading structure
+   - File parsing issues
+   - Long paragraphs
+   - Missing bullets
+   - Fonts that ATS may not parse well
+
+4. **Good Keywords Found**
+   Extract strong job-market relevant keywords present in the resume.
+   Include both:
+   - Technical keywords (if present)
+   - Non-technical / soft skills (if present)
+
+5. **Suggestions for Improvement**
+   Give clear, practical recommendations to improve ATS score.
+
+Your response MUST be JSON only.  
+Use this structure exactly:
+
+{
+  "ats_score": "",
+  "missing_sections": [],
+  "formatting_issues": [],
+  "good_keywords": [],
+  "suggestions": ""
+}
+
+Input Resume:
+${resumeText}
     `;
 
     const completion = await groq.chat.completions.create({

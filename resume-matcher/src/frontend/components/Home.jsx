@@ -25,7 +25,7 @@ export default function Home() {
 
           {/* Resume Score Box */}
           <div
-            onClick={() => navigate("/resume-score")}
+            onClick={() => navigate("/resumeScore")}
             className="cursor-pointer w-64 h-64 bg-white rounded-xl shadow-lg flex flex-col items-center justify-center border hover:shadow-2xl transition"
           >
             <BarChart3 size={40} className="text-blue-700 mb-3" />

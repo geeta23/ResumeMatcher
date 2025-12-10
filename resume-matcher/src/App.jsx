@@ -7,7 +7,7 @@ import Login from "./frontend/components/Login";
 import Register from "./frontend/components/Register";
 import Home from "./frontend/components/Home";
 import ResumeMatcher from "./frontend/components/ResumeMatcher";
-// import ResumeScore from "./frontend/components/ResumeScore";
+import ResumeScore from "./frontend/components/ResumeScore";
 
 export default function App() {
   return (
@@ -36,14 +36,14 @@ export default function App() {
             }
           />
 
-          {/* <Route
-            path="/score"
+          <Route
+            path="/resumeScore"
             element={
               <ProtectedRoute>
                 <ResumeScore />
               </ProtectedRoute>
             }
-          /> */}
+          />
         </Routes>
         </div>
       </Router>

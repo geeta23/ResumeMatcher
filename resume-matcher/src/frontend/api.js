@@ -28,4 +28,10 @@ export const loginAPI = (email, password) =>
 export const registerAPI = (username, email, password) =>
   axios.post("http://localhost:3000/api/auth/register", { username, email, password });
 
+export const resumeScore = (resumeText) => {
+  return axios.post(`http://localhost:3000/api/resume/AtsScore`, {
+    resumeText
+  });
+};
+
 export default api;
