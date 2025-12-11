@@ -13,42 +13,47 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <TopBar />
-        <div className="pt-16">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
 
-            {/* Pages with waves background */}
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
+        {/* FULL SCREEN WRAPPER */}
+        <div className="w-full min-h-screen bg-gradient-to-b from-blue-300 via-blue-100 to-white pt-[60px]">
+
+          {/* FIXED TOPBAR */}
+          <TopBar />
+
+          {/* MAIN CONTENT — scrolls properly */}
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
                     <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/resumeMatch"
-              element={
-                <ProtectedRoute>
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/resumeMatch"
+                element={
+                  <ProtectedRoute>
                     <ResumeMatcher />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/resumeScore"
-              element={
-                <ProtectedRoute>
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/resumeScore"
+                element={
+                  <ProtectedRoute>
                     <ResumeScore />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
       </Router>
     </AuthProvider>
   );
 }
-
-

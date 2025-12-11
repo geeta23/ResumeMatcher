@@ -28,7 +28,7 @@ export default function ResumeMatcher() {
   return (
     <div
       className="
-        fixed inset-0 
+        max-h-full w-full 
         flex flex-col items-center justify-center 
         bg-gradient-to-b from-blue-300 via-blue-100 to-white 
         overflow-auto pt-24 px-4
@@ -145,6 +145,24 @@ export default function ResumeMatcher() {
               <p className="text-gray-700 leading-relaxed text-lg">
                 {result.recommendations}
               </p>
+            </div>
+
+            {/* ⭐ Back to Inputs Button */}
+            <div className="flex justify-center">
+              <button
+                onClick={() =>
+                  window.scrollTo({ top: 0, behavior: "smooth" })
+                }
+                className="
+                  mt-3 px-5 py-2 
+                  rounded-xl 
+                  bg-blue-500 text-white text-sm
+                  hover:bg-blue-600 
+                  transition
+                "
+              >
+                Back to Resume & JD
+              </button>
             </div>
           </div>
         )}
