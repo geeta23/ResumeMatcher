@@ -1,175 +1,82 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { FileText } from "lucide-react";
 import TextUploadBox from "./TextUploadBox";
 import { resumeScore } from "../api";
 
 export default function ResumeScore() {
   const [resumeText, setResumeText] = useState("");
   const [scoreData, setScoreData] = useState(null);
-  const resultRef = useRef(null);
 
-  // Scroll to results
-  useEffect(() => {
-    if (scoreData && resultRef.current) {
-      resultRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [scoreData]);
-
-  // Backend call
-  const getATSScore = async () => {
-    if (!resumeText.trim()) {
-      alert("Please upload or paste a resume first.");
-      return;
-    }
-
-    try {
-      const response = await resumeScore(resumeText);
-      console.log("ATS SCORE RESPONSE:", response.data.result);
-      setScoreData(response.data.result);
-    } catch (err) {
-      console.error("ATS API error:", err);
-      alert("Unable to fetch ATS score.");
-    }
-  };
-
-  // Circular score ring
-  const CircularScore = ({ score }) => {
-    const radius = 50;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (score / 100) * circumference;
-
-    return (
-      <svg width="140" height="140" className="mx-auto my-4">
-        <circle
-          cx="70"
-          cy="70"
-          r={radius}
-          stroke="#d1d5db"
-          strokeWidth="12"
-          fill="none"
-        />
-
-        <circle
-          cx="70"
-          cy="70"
-          r={radius}
-          stroke="#3b82f6"
-          strokeWidth="12"
-          fill="none"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          transform="rotate(-90 70 70)"
-        />
-
-        <text
-          x="50%"
-          y="50%"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fontSize="28"
-          fontWeight="bold"
-          fill="#2563eb"
-        >
-          {score}
-        </text>
-      </svg>
-    );
-  };
+  async function handleSubmit() {
+    if (!resumeText.trim()) return;
+    const result = await resumeScore(resumeText);
+    setScoreData(result);
+  }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-4 w-full">
-      
-      <h1 className="text-3xl font-bold text-center text-blue-600">
-        Resume ATS Score Checker
-      </h1>
+    <div
+      className="
+        fixed inset-0 
+        flex flex-col items-center justify-center 
+        bg-gradient-to-b from-blue-300 via-blue-100 to-white 
+        overflow-auto pt-24 px-4
+      "
+    >
+      {/* Glassmorphism Container */}
+      <div
+        className="
+          animate-fadeIn
+          backdrop-blur-xl bg-white/40 
+          shadow-2xl rounded-3xl 
+          p-10 w-full max-w-3xl
+          border border-white/30
+        "
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <FileText size={36} className="text-blue-700" />
+          <h1 className="text-2xl font-extrabold text-blue-800 tracking-wide">
+            Resume Score
+          </h1>
+        </div>
 
-      <p className="text-center mt-2 text-gray-600">
-        Upload your resume to check its ATS compatibility and job-market readiness.
-      </p>
+        <p className="text-gray-700 text-sm mb-6 leading-relaxed">
+          Upload or paste your resume text below. Get instant scoring and
+          insights to improve your resume.
+        </p>
 
-      {/* Upload Box */}
-      <div className="mt-6">
-        <TextUploadBox
-          label="Resume"
-          value={resumeText}
-          setValue={setResumeText}
-        />
-      </div>
+        {/* Upload Box */}
+        <TextUploadBox text={resumeText} setText={setResumeText} />
 
-      {/* Button */}
-      <div className="text-center mt-6">
-        <button
-          onClick={getATSScore}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700"
-        >
-          Get ATS Score
-        </button>
-      </div>
+        {/* Submit Button */}
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={handleSubmit}
+            className="
+              px-8 py-3 
+              rounded-xl 
+              bg-blue-600 text-white font-semibold
+              hover:bg-blue-700 
+              hover:shadow-lg hover:shadow-blue-300/60
+              transition-all duration-300
+            "
+          >
+            Get Score
+          </button>
+        </div>
 
-      {/* Results */}
-      {scoreData && (
-        <div
-          ref={resultRef}
-          className="mt-10 bg-white p-6 shadow rounded-lg space-y-6"
-        >
-          <h2 className="text-2xl font-bold text-center text-gray-800">
-            Your ATS Score
-          </h2>
-
-          {/* Blue Circular Score */}
-          <CircularScore score={scoreData.ats_score || 0} />
-
-          {/* Missing Sections */}
-          <div>
-            <h3 className="font-bold text-lg">Missing Sections</h3>
-            {scoreData.missing_sections?.length ? (
-              <ul className="list-disc ml-6 text-red-600">
-                {scoreData.missing_sections.map((s, i) => (
-                  <li key={i}>{s}</li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No major sections missing.</p>
-            )}
-          </div>
-
-          {/* Formatting Issues */}
-          <div>
-            <h3 className="font-bold text-lg">Formatting Issues</h3>
-            {scoreData.formatting_issues?.length ? (
-              <ul className="list-disc ml-6 text-red-600">
-                {scoreData.formatting_issues.map((s, i) => (
-                  <li key={i}>{s}</li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No major formatting issues found.</p>
-            )}
-          </div>
-
-          {/* Good Keywords */}
-          <div>
-            <h3 className="font-bold text-lg">Good Keywords Found</h3>
-            {scoreData.good_keywords?.length ? (
-              <ul className="list-disc ml-6 text-green-600">
-                {scoreData.good_keywords.map((s, i) => (
-                  <li key={i}>{s}</li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-600">No strong keywords detected.</p>
-            )}
-          </div>
-
-          {/* Suggestions */}
-          <div>
-            <h3 className="font-bold text-lg">Suggestions</h3>
-            <p className="text-gray-700">
-              {scoreData.suggestions || "No suggestions provided."}
+        {/* Score Result */}
+        {scoreData && (
+          <div className="mt-8 p-6 rounded-2xl bg-white/70 shadow-md border border-gray-200">
+            <h2 className="text-2xl font-bold text-blue-800 mb-2">
+              Your Resume Score: {scoreData.score} / 100
+            </h2>
+            <p className="text-gray-700 text-lg leading-relaxed">
+              {scoreData.feedback}
             </p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

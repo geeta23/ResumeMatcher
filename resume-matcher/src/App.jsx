@@ -8,7 +8,6 @@ import Register from "./frontend/components/Register";
 import Home from "./frontend/components/Home";
 import ResumeMatcher from "./frontend/components/ResumeMatcher";
 import ResumeScore from "./frontend/components/ResumeScore";
-import Layout from "./frontend/components/Layout";
 
 export default function App() {
   return (
@@ -25,9 +24,7 @@ export default function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Layout>
                     <Home />
-                  </Layout>
                 </ProtectedRoute>
               }
             />
@@ -35,9 +32,7 @@ export default function App() {
               path="/resumeMatch"
               element={
                 <ProtectedRoute>
-                  <Layout>
                     <ResumeMatcher />
-                  </Layout>
                 </ProtectedRoute>
               }
             />
@@ -45,9 +40,7 @@ export default function App() {
               path="/resumeScore"
               element={
                 <ProtectedRoute>
-                  <Layout>
                     <ResumeScore />
-                  </Layout>
                 </ProtectedRoute>
               }
             />

@@ -27,9 +27,9 @@ function cleanFileName(name) {
 // -----------------------------
 function normalizeExtractedText(text) {
   return text
-    .replace(/\s+/g, " ")                  // collapse all whitespace
-    .replace(/[^\w+.\s]/g, "")             // remove weird characters
-    .replace(/([A-Za-z])\s+([A-Za-z])/g, "$1$2") // fix broken words "S pring" → "Spring"
+    .replace(/\s+/g, " ")
+    .replace(/[^\w+.\s]/g, "")
+    .replace(/([A-Za-z])\s+([A-Za-z])/g, "$1$2")
     .toLowerCase()
     .trim();
 }
@@ -37,9 +37,6 @@ function normalizeExtractedText(text) {
 export default function TextUploadBox({ label, value, setValue }) {
   const [fileName, setFileName] = useState("");
 
-  // -----------------------------
-  // PDF TEXT EXTRACTION
-  // -----------------------------
   const extractPdfText = async (file) => {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -53,9 +50,6 @@ export default function TextUploadBox({ label, value, setValue }) {
     return text;
   };
 
-  // -----------------------------
-  // FILE UPLOAD HANDLER
-  // -----------------------------
   const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -65,7 +59,10 @@ export default function TextUploadBox({ label, value, setValue }) {
 
     let extractedText = "";
 
-    if (file.type === "application/pdf" || cleanedName.toLowerCase().endsWith(".pdf")) {
+    if (
+      file.type === "application/pdf" ||
+      cleanedName.toLowerCase().endsWith(".pdf")
+    ) {
       try {
         extractedText = await extractPdfText(file);
       } catch (err) {
@@ -73,31 +70,57 @@ export default function TextUploadBox({ label, value, setValue }) {
         alert("Unable to extract text from PDF.");
         return;
       }
-    } else if (file.type === "text/plain" || cleanedName.toLowerCase().endsWith(".txt")) {
+    } else if (
+      file.type === "text/plain" ||
+      cleanedName.toLowerCase().endsWith(".txt")
+    ) {
       extractedText = await file.text();
     } else {
       alert("Only PDF and TXT files are supported.");
       return;
     }
 
-    // normalize text before passing to parent
     const cleanText = normalizeExtractedText(extractedText);
-
     setValue(cleanText);
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <label className="font-semibold text-gray-700">{label}</label>
+    <div
+      className="
+        group
+        rounded-2xl 
+        p-5 
+        bg-white/30 
+        backdrop-blur-xl 
+        border border-white/50 
+        shadow-lg 
+        transition-all duration-300
+        hover:shadow-2xl hover:shadow-blue-300/40
+      "
+    >
+      {/* Label */}
+      <label className="block text-sm font-semibold text-blue-900 mb-2">
+        {label}
+      </label>
 
+      {/* Text Area */}
       <textarea
-        className="w-full h-40 border p-2 rounded-md mt-2"
-        placeholder={`Paste ${label} text or upload a file`}
+        className="
+          w-full h-40 
+          p-3 rounded-xl 
+          border border-blue-200
+          bg-white/60 
+          backdrop-blur-xl 
+          focus:outline-none focus:ring-2 focus:ring-blue-400
+          transition
+        "
+        placeholder={`Paste your ${label} text or upload a file`}
         value={value}
         onChange={(ev) => setValue(ev.target.value)}
       />
 
-      <div className="mt-3">
+      {/* Upload */}
+      <div className="mt-4">
         <input
           type="file"
           accept=".pdf,.txt"
@@ -105,15 +128,28 @@ export default function TextUploadBox({ label, value, setValue }) {
           className="hidden"
           id={`${label}-upload`}
         />
+
         <label
           htmlFor={`${label}-upload`}
-          className="cursor-pointer bg-gray-200 px-4 py-2 rounded shadow hover:bg-gray-300 inline-block"
+          className="
+            cursor-pointer 
+            inline-block 
+            px-6 py-2 
+            rounded-xl 
+          bg-blue-200 
+          text-gray-800 
+            font-medium
+            shadow 
+          hover:bg-blue-300
+          hover:shadow-blue-300/60
+            transition-all duration-300
+          "
         >
           Upload PDF / TXT
         </label>
 
         {fileName && (
-          <p className="text-sm text-gray-500 mt-1">Uploaded: {fileName}</p>
+          <p className="text-sm text-gray-700 mt-2">Uploaded: {fileName}</p>
         )}
       </div>
     </div>
